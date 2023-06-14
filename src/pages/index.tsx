@@ -5,74 +5,43 @@ import RespostaModel from '../../model/resposta'
 import Botao from '../../components/Botao'
 import Questionario from '../../components/Questionario'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+import styles from  "../styles/Inicio.module.css"
 
-const BASE_URL = 'http://localhost:3000/api'
 
 export default function Home() {
-  const router = useRouter()
+const jogoURL = "/jogo"
+  return (
+    <div className={styles.at}> 
+      <div className={styles.att}>
+        <div className={styles.enunciado}>
+            <span className={styles.texto}>Este quiz foi desenvolvido pelos alunos:</span>
+        </div>
 
-  const [idsDasQuestoes, setIdsDasQuestoes] = useState<number[]>([])
-  const [questao, setQuestao] = useState<QuestaoModel>()
-  const [respostasCertas, setRespostasCertas] = useState<number>(0)
+        <div className={styles.texto2}>
+          <ul>
+            Efraim Quintunda Fernandes -  323103429
+          </ul>
+          <ul>
+            Gabriel Yochio De Oliveira -  320102724
+          </ul>
+          <ul>
+            Giovana Lopes Venancio -  323101131
+          </ul>
+          <ul>
+            Henrique Reis de Oliveira -  320107691
+          </ul>
+          <ul>
+            Mateus Matos Xavier -  323101020
+          </ul>
+          <ul>
+            Richard Marco Mamani Huanca -  317109163
+          </ul>
+        </div>
+        
+      </div>
 
-  async function carregarIdsDasQuestoes() {
-    const resp = await fetch(`${BASE_URL}/questionario`)
-    const idsDasQuestoes = await resp.json()
-    setIdsDasQuestoes(idsDasQuestoes)
-  }
-
-  async function carregarQuestao(idQuestao: number) {
-    const resp = await fetch(`${BASE_URL}/questoes/${idQuestao}`)
-    const json = await resp.json()
-    const novaQuestao = QuestaoModel.criarUsandoObjeto(json)
-    setQuestao(novaQuestao)
-  }
-
-  useEffect(()=> {
-    carregarIdsDasQuestoes()
-  }, [])
-
-  useEffect(()=> {
-    idsDasQuestoes.length > 0 && carregarQuestao(idsDasQuestoes[0])
-  }, [idsDasQuestoes])
-
-  function questaoRespondida(questaoRespondida: QuestaoModel) {
-    setQuestao(questaoRespondida)
-    const acertou = questaoRespondida.acertou
-    setRespostasCertas(respostasCertas + (acertou ? 1 : 0))
-  }
-
-  function idProximaPergunta() {
-    const proximoIndice = idsDasQuestoes.indexOf(questao.id) + 1
-    return idsDasQuestoes[proximoIndice]
-  }
-
-  function irPraProximoPasso() {
-    const proximoId = idProximaPergunta()
-    proximoId ? irParaProximaQuestao(proximoId) : finalizar()
-  }
-
-  function irParaProximaQuestao(proximoId: number) {
-    carregarQuestao(proximoId)
-  }
-
-  function finalizar() {
-    router.push({
-      pathname: "./resultado",
-      query: {
-        total: idsDasQuestoes.length,
-        certas: respostasCertas
-      }
-    })
-  }
-
-
-  return questao ? (
-    <Questionario 
-      questao={questao}
-      ultima={idProximaPergunta() === undefined}
-      questaoRespondida={questaoRespondida}
-      irPraProximoPasso={irPraProximoPasso}
-    />
-  ) : false
+      <Link href="/jogo"><button className={styles.botao}>Iniciar Quiz</button></Link>
+    </div>
+  )
 }
