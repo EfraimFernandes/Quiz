@@ -29,7 +29,7 @@ const jogoURL = "/jogo"
             Giovana Lopes Venancio -  323101131
           </ul>
           <ul>
-            Henrique Reis de Oliveira -  320107691
+            Henrique Reis De Oliveira -  320107691
           </ul>
           <ul>
             Mateus Matos Xavier -  323101020
